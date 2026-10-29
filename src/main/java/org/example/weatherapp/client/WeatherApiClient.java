@@ -28,7 +28,12 @@ public class WeatherApiClient {
     public OpenMeteoResponse fetchWeather(double lat, double lon) {
         //String url = "https://invalid-api-domain-12345.com";
         String url = "https://api.open-meteo.com/v1/forecast?latitude="
-                + lat + "&longitude=" + lon + "&current_weather=true";
+                + lat + "&longitude=" + lon + "&current_weather=true&hourly=temperature_2m";
+
+        String maxTemp = "https://api.open-meteo.com/v1/forecast?latitude="
+                + lat + "&longitude=" + lon + "&current_weather";
+
+        System.out.println(maxTemp);
 
         return restClient.get()
                 .uri(url)
@@ -38,6 +43,7 @@ public class WeatherApiClient {
 
     public GeocodingResponse fetchCoordinates(String city)
     {
+        System.out.println("Fetching coordinates for: " + city);
         String url = "https://geocoding-api.open-meteo.com/v1/search?name="
                 + city + "&count=1";
         return restClient.get()

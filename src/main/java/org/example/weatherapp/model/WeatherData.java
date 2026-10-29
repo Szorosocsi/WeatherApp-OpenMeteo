@@ -8,5 +8,6 @@ public record WeatherData(
         LocalDate date,
         double minTemp,
         double maxTemp,
-        List<Double> hourlyTemps
+        List<Double> hourlyTemps,
+        List<String> hourlyTimes
 ) {}

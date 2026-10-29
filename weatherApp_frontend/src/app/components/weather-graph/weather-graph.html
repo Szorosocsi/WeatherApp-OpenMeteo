@@ -1,0 +1,49 @@
+<div class="mt-6 p-4 bg-slate-900/50 rounded-xl border border-slate-700/50">
+  <span class="text-xs uppercase text-slate-400 font-bold block mb-3 text-left">Temperature Trend Diagram</span>
+
+  <svg viewBox="0 0 600 200" class="w-300 h-140 overflow-visible">
+    <!-- Zero / Center Line at Y = 100 -->
+    <line x1="40" y1="100" x2="570" y2="100" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4" />
+
+    <!-- Y-Axis Labels -->
+    <text x="32" y="25" fill="#f59e0b" font-size="9" font-weight="700" text-anchor="end">{{ getMaxTemp() | number:'1.1-1' }}°</text>
+    <text x="32" y="105" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="end">0°</text>
+    <text x="32" y="175" fill="#60a5fa" font-size="9" font-weight="700" text-anchor="end">{{ getMinTemp() | number:'1.1-1' }}°</text>
+
+    <!-- X-Axis Line -->
+    <line x1="40" y1="170" x2="570" y2="170" stroke="#475569" stroke-width="1" />
+
+    <!-- Bars, Temp Text, and Hour Labels -->
+    <g *ngFor="let temp of hourlyTemps; let i = index">
+      <!-- Bar -->
+      <rect
+        [attr.x]="40 + (i * (530 / hourlyTemps.length)) + 1"
+        [attr.y]="calculateBarY(temp)"
+        [attr.width]="(530 / hourlyTemps.length) - 2"
+        [attr.height]="calculateBarHeight(temp)"
+        [attr.fill]="temp >= 0 ? '#3b82f6' : '#ef4444'"
+        rx="2"
+      />
+
+      <!-- Temperature Label on Bar -->
+      <text
+        [attr.x]="40 + (i * (530 / hourlyTemps.length)) + ((530 / hourlyTemps.length) / 2)"
+        [attr.y]="temp >= 0 ? calculateBarY(temp) - 5 : calculateBarY(temp) + 12"
+        fill="#e2e8f0"
+        font-size="7"
+        font-weight="600"
+        text-anchor="middle"
+      >{{ temp | number:'1.1-1' }}°</text>
+
+      <!-- Hour Label Below X-Axis -->
+      <text
+        *ngIf="hourlyTimes && hourlyTimes[i]"
+        [attr.x]="40 + (i * (530 / hourlyTemps.length)) + ((530 / hourlyTemps.length) / 2)"
+        y="185"
+        fill="#94a3b8"
+        font-size="7"
+        text-anchor="middle"
+      >{{ getFormattedHour(hourlyTimes[i]) }}</text>
+    </g>
+  </svg>
+</div>
